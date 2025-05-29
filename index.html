@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>نموذج إضافة عامل</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+      direction: rtl;
+    }
+    h2 { text-align: center; }
+    label { display: block; margin-top: 15px; }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover { background: #45a049; }
+  </style>
+</head>
+<body>
+  <h2>نموذج إضافة عامل</h2>
+  <form id="workerForm">
+    <label>الاسم الكامل: <input name="الاسم الكامل" required /></label>
+    <label>الجنسية: <input name="الجنسية" /></label>
+    <label>رقم الإقامة: <input name="رقم الإقامة" /></label>
+    <label>رقم الجواز: <input name="رقم الجواز" /></label>
+    <label>المهنة: <input name="المهنة" /></label>
+    <label>تاريخ الميلاد: <input type="date" name="تاريخ الميلاد" /></label>
+    <label>بداية العقد: <input type="date" name="بداية العقد" /></label>
+    <label>نهاية العقد: <input type="date" name="نهاية العقد" /></label>
+    <label>حالة التامين الطبي: <input name="حالة التامين الطبي" /></label>
+    <label>انتهاء الإقامة: <input type="date" name="انتهاء الإقامة" /></label>
+    <label>اسم المنشأة الموجود عليها العامل: <input name="اسم المنشأة الموجود عليها العامل" /></label>
+    <label>الرقم الموحد للمنشاءة: <input name="الرقم الموحد للمنشاءة" /></label>
+    <label>مقر العمل: <input name="مقر العمل" /></label>
+    <label>مقر السكن: <input name="مقر السكن" /></label>
+    <label>الراتب: <input name="الراتب" /></label>
+    <label>البدلات: <input name="البدلات" /></label>
+    <label>صورة: <input name="صورة" /></label>
+    <label>مستندات: <input name="مستندات" /></label>
+    <label>رقم التواصل: <input name="رقم التواصل" /></label>
+    <label>الايميل: <input type="email" name="الايميل" /></label>
+    <label>الحالة: <input name="الحالة" /></label>
+    <label>الملاحظات: <textarea name="الملاحظات"></textarea></label>
+
+    <button type="submit">إرسال</button>
+  </form>
+
+  <p id="response" style="text-align:center; margin-top: 20px;"></p>
+
+  <script>
+    const form = document.getElementById("workerForm");
+    const responseMsg = document.getElementById("response");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      responseMsg.textContent = "🚀 جاري الإرسال...";
+
+      const formData = new FormData(form);
+      const data = new URLSearchParams(formData);
+
+      try {
+        const res = await fetch("https://beso100.app.n8n.cloud/webhook/add-worker", {
+          method: "POST",
+          body: data,
+        });
+
+        if (res.ok) {
+          responseMsg.textContent = "✅ تم إرسال البيانات بنجاح!";
+          form.reset();
+        } else {
+          responseMsg.textContent = "❌ حدث خطأ أثناء الإرسال.";
+        }
+      } catch (error) {
+        responseMsg.textContent = "⚠️ تعذر الاتصال بالخادم.";
+      }
+    });
+  </script>
+</body>
+</html>
