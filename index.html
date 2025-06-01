@@ -9,13 +9,18 @@
       font-family: sans-serif;
       background: #f9f9f9;
       padding: 2rem;
-      max-width: 600px;
+      max-width: 500px;
       margin: auto;
       direction: rtl;
     }
-    h2 { text-align: center; }
-    label { display: block; margin-top: 15px; }
-    input, textarea {
+    h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input, select {
       width: 100%;
       padding: 8px;
       margin-top: 5px;
@@ -30,39 +35,44 @@
       cursor: pointer;
       font-size: 16px;
     }
-    button:hover { background: #45a049; }
+    button:hover {
+      background: #45a049;
+    }
   </style>
 </head>
 <body>
   <h2>نموذج إضافة عامل</h2>
   <form id="workerForm">
-    <label>الاسم الكامل: <input name="الاسم الكامل" required /></label>
-    <label>الجنسية: <input name="الجنسية" /></label>
-    <label>رقم الإقامة: <input name="رقم الإقامة" /></label>
-    <label>رقم الجواز: <input name="رقم الجواز" /></label>
-    <label>المهنة: <input name="المهنة" /></label>
-    <label>تاريخ الميلاد: <input type="date" name="تاريخ الميلاد" /></label>
-    <label>بداية العقد: <input type="date" name="بداية العقد" /></label>
-    <label>نهاية العقد: <input type="date" name="نهاية العقد" /></label>
-    <label>حالة التامين الطبي: <input name="حالة التامين الطبي" /></label>
-    <label>انتهاء الإقامة: <input type="date" name="انتهاء الإقامة" /></label>
-    <label>اسم المنشأة الموجود عليها العامل: <input name="اسم المنشأة الموجود عليها العامل" /></label>
-    <label>الرقم الموحد للمنشاءة: <input name="الرقم الموحد للمنشاءة" /></label>
-    <label>مقر العمل: <input name="مقر العمل" /></label>
-    <label>مقر السكن: <input name="مقر السكن" /></label>
-    <label>الراتب: <input name="الراتب" /></label>
-    <label>البدلات: <input name="البدلات" /></label>
-    <label>صورة: <input name="صورة" /></label>
-    <label>مستندات: <input name="مستندات" /></label>
-    <label>رقم التواصل: <input name="رقم التواصل" /></label>
-    <label>الايميل: <input type="email" name="الايميل" /></label>
-    <label>الحالة: <input name="الحالة" /></label>
-    <label>الملاحظات: <textarea name="الملاحظات"></textarea></label>
+    <label>الاسم الكامل:
+      <input name="الاسم" required />
+    </label>
+
+    <label>رقم الإقامة:
+      <input name="رقم الإقامة" required />
+    </label>
+
+    <label>رقم الجوال:
+      <input name="جوال" required />
+    </label>
+
+    <label>البريد الإلكتروني:
+      <input type="email" name="ايميل" />
+    </label>
+
+    <label>اسم المنشأة الموجود عليها العامل:
+      <select name="اسم المنشأة" required>
+        <option value="">اختر المنشأة</option>
+        <option value="شركة ابراهيم علي ابراهيم عسيري للمقاولات">شركة ابراهيم علي ابراهيم عسيري للمقاولات</option>
+        <option value="شركة الخدمات المهنية للصيانة والنظافة شركة شخص واحد">شركة الخدمات المهنية للصيانة والنظافة شركة شخص واحد</option>
+        <option value="مؤسسة ابراهيم علي ابراهيم عسيري للتشغيل والصيانة">مؤسسة ابراهيم علي ابراهيم عسيري للتشغيل والصيانة</option>
+        <option value="مؤسسة محترف الواجهات الملونة التجارية">مؤسسة محترف الواجهات الملونة التجارية</option>
+      </select>
+    </label>
 
     <button type="submit">إرسال</button>
   </form>
 
-  <p id="response" style="text-align:center; margin-top: 20px;"></p>
+  <p id="response" style="text-align: center; margin-top: 20px;"></p>
 
   <script>
     const form = document.getElementById("workerForm");
@@ -70,7 +80,7 @@
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      responseMsg.textContent = "🚀 جاري الإرسال...";
+      responseMsg.textContent = "جاري الإرسال...";
 
       const formData = new FormData(form);
       const data = new URLSearchParams(formData);
@@ -88,7 +98,7 @@
           responseMsg.textContent = "❌ حدث خطأ أثناء الإرسال.";
         }
       } catch (error) {
-        responseMsg.textContent = "⚠️ تعذر الاتصال بالخادم.";
+        responseMsg.textContent = "❌ تعذر الاتصال بالخادم.";
       }
     });
   </script>
