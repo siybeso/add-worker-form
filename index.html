@@ -9,7 +9,7 @@
       font-family: sans-serif;
       background: #f9f9f9;
       padding: 2rem;
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
       direction: rtl;
     }
@@ -38,41 +38,52 @@
     button:hover {
       background: #45a049;
     }
+    #response {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
+
   <h2>نموذج إضافة عامل</h2>
+
   <form id="workerForm">
     <label>الاسم الكامل:
       <input name="الاسم" required />
     </label>
-
     <label>رقم الإقامة:
       <input name="رقم الإقامة" required />
     </label>
-
     <label>رقم الجوال:
       <input name="جوال" required />
     </label>
-
     <label>البريد الإلكتروني:
-      <input type="email" name="ايميل" />
+      <input name="ايميل" type="email" />
     </label>
-
     <label>اسم المنشأة الموجود عليها العامل:
-      <select name="اسم المنشأة" required>
+      <select name="المنشأة" required>
         <option value="">اختر المنشأة</option>
-        <option value="شركة ابراهيم علي ابراهيم عسيري للمقاولات">شركة ابراهيم علي ابراهيم عسيري للمقاولات</option>
-        <option value="شركة الخدمات المهنية للصيانة والنظافة شركة شخص واحد">شركة الخدمات المهنية للصيانة والنظافة شركة شخص واحد</option>
-        <option value="مؤسسة ابراهيم علي ابراهيم عسيري للتشغيل والصيانة">مؤسسة ابراهيم علي ابراهيم عسيري للتشغيل والصيانة</option>
-        <option value="مؤسسة محترف الواجهات الملونة التجارية">مؤسسة محترف الواجهات الملونة التجارية</option>
+        <option>شركة ابراهيم علي ابراهيم عسيري للمقاولات</option>
+        <option>شركة الخدمات المهنية للصيانة والنظافة شركة شخص واحد</option>
+        <option>مؤسسة ابراهيم علي ابراهيم عسيري للتشغيل والصيانة</option>
+        <option>مؤسسة محترف الواجهات الملونة التجارية</option>
+        <option>بدون ويعمل معنا</option>
+        <option>يعمل معنا بإجير</option>
+        <option>خرج من الشركة هروب</option>
       </select>
     </label>
 
     <button type="submit">إرسال</button>
   </form>
 
-  <p id="response" style="text-align: center; margin-top: 20px;"></p>
+  <br>
+  <h3>أو أضف العمال بالجملة 👇</h3>
+  <input type="file" id="csvFile" accept=".csv" />
+  <button onclick="uploadCSV()">إضافة بالجملة</button>
+
+  <p id="response"></p>
 
   <script>
     const form = document.getElementById("workerForm");
@@ -97,10 +108,38 @@
         } else {
           responseMsg.textContent = "❌ حدث خطأ أثناء الإرسال.";
         }
-      } catch (error) {
+      } catch {
         responseMsg.textContent = "❌ تعذر الاتصال بالخادم.";
       }
     });
+
+    async function uploadCSV() {
+      const fileInput = document.getElementById("csvFile");
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("يرجى اختيار ملف CSV أولاً.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await fetch("https://beso100.app.n8n.cloud/webhook/add-worker", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (res.ok) {
+          responseMsg.textContent = "✅ تم رفع الملف ومعالجة البيانات!";
+        } else {
+          responseMsg.textContent = "❌ فشل رفع الملف.";
+        }
+      } catch {
+        responseMsg.textContent = "❌ تعذر الاتصال بالخادم.";
+      }
+    }
   </script>
+
 </body>
 </html>
